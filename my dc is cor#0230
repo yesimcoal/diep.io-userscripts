@@ -1,0 +1,303 @@
+// ==UserScript==
+// @name        westware
+// @namespace   Violentmonkey Scripts
+// @match       https://diep.io/
+// @grant       none
+// @version     1.0
+// @author      West and George (updated by hiro)
+// @description nothing special cus school
+// ==/UserScript==
+
+var triflank = false;
+var traps = false;
+var bomber = false;
+var deathstar = false;
+var realshotgun = false;
+var trappers = false;
+var twinbasic = false;
+var autogunner = false;
+var shotgun = false;
+var gai = true
+var autolevel = false
+// ids
+/////////////////////////////////////////////////////////// magic num
+function magicNum(build) {
+    for (var i = 0, seed = 1, res = 0, timer = 0; i < 40; i++) {
+        let nibble = parseInt(build[i], 16);
+        res ^= ((nibble << ((seed & 1) << 2)) << (timer << 3));
+        timer = (timer + 1) & 3;
+        seed ^= !timer;
+    };
+
+    return res >>> 0; // unsigned
+}
+let t = {
+  tank: 0,
+  twin: 1,
+  triplet: 2,
+  tripleshot: 3,
+  quad: 4,
+  octo: 5,
+  sniper: 6,
+  machine: 7,
+  flank: 8,
+  triangle: 9,
+  destroyer: 10,
+  overseer: 11,
+  overlord: 12,
+  twinflank: 13,
+  penta: 14,
+  assasin: 15,
+  arenacloser: 16,
+  necro: 17,
+  tripletwin: 18,
+  hunter: 19,
+  gunner: 20,
+  stalker: 21,
+  ranger: 22,
+  booster: 23,
+  fighter: 24,
+  hybrid: 25,
+  manager: 26,
+  mothership: 27,
+  predator: 28,
+  sprayer: 29,
+  predatorx: '',
+  trapper: 31,
+  gunnertrapper: 32,
+  overtrapper: 33,
+  megatrapper: 34,
+  tritrapper: 35,
+  smasher: 36,
+  megasmasher: '',
+  landmine: 38,
+  autogunner: 39,
+  auto5: 40,
+  auto3: 41,
+  spreadshot: 42,
+  streamliner: 43,
+  autotrapper: 44,
+  dominator3: 'Dominator',
+  dominator1: 'Dominator',
+  dominator2: 'Dominator',
+  battleship: 48,
+  anni: 49,
+  autosmasher: 50,
+  spike: 51,
+  factory: 52,
+  skimmer: 54,
+  rocketeer: 55,
+  length: 56,
+}
+var mnumber = magicNum('9f87a35db2df1984f887db8fa37750e929823917') % 54,
+  flankguard = (t.flank ^ mnumber) << 1,
+  triangle = (t.triangle ^ mnumber) << 1,
+  machinegun = (t.machine ^ mnumber) << 1,
+  destroyer = (t.destroyer ^ mnumber) << 1,
+  twin = (t.twin ^ mnumber) << 1,
+  triple = (t.tripleshot ^ mnumber) << 1,
+  triplet = (t.triplet ^ mnumber) << 1,
+  quad = (t.quad ^ mnumber) << 1,
+  octo = (t.octo ^ mnumber) << 1,
+  sniper= ( t.sniper ^ mnumber) <<1,
+  trapper= ( t.trapper ^ mnumber) <<1,
+  gunnertrapper= ( t.gunnertrapper ^ mnumber) <<1,
+  tritrapper= ( t.tritrapper ^ mnumber) <<1,
+  overtrapper= ( t.overtrapper ^ mnumber) <<1,
+  overseer= ( t.overseer ^ mnumber) <<1,
+  overlord= ( t.overlord ^ mnumber) <<1,
+  machine= ( t.machine ^ mnumber) <<1,
+  anni= ( t.anni ^ mnumber) <<1
+
+
+//
+function triflanks() {
+        if (twinbasic) {
+                Hook.send([4, twin]);
+                input.keyDown(220);
+                input.keyUp(220);
+        }
+        if (triflank) {
+                Hook.send([4, flankguard]);
+                Hook.send([4, triangle]);
+                input.keyDown(220);
+                input.keyUp(220);
+        }
+        if (traps) {
+                Hook.send([4, sniper]);
+                Hook.send([4, trapper]);
+                Hook.send([4, gunnertrapper]);
+                input.keyDown(220);
+                input.keyUp(220);
+        }
+        if (deathstar) {
+                Hook.send([4, twin]);
+                Hook.send([4, quad]);
+                Hook.send([4, octo]);
+                input.keyDown(220);
+                input.keyUp(220);
+        }
+        if (bomber) {
+                Hook.send([4, machine]);
+                Hook.send([4, destroyer]);
+                input.keyDown(220);
+                input.keyUp(220);
+        }
+        if (trappers) {
+                Hook.send([4, sniper]);
+                Hook.send([4, trapper]);
+                Hook.send([4, tritrapper]);
+                input.keyDown(220);
+                input.keyUp(220);
+        }
+        if (realshotgun) {
+                Hook.send([4, twin]);
+                Hook.send([4, triple]);
+                setTimeout(() => {
+                        Hook.send([4, triplet]);
+                        input.keyDown(220);
+                        input.keyUp(220);
+                }, 350);
+        }
+}
+const crx = CanvasRenderingContext2D.prototype;
+crx.fillText = new Proxy(crx.fillText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "This is the tale of...") {
+                        args[0] = "this is WESTWARE.";
+                }
+                f.apply(_this, args);
+        }
+});
+crx.strokeText = new Proxy(crx.strokeText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "This is the tale of...") {
+                        args[0] = "this is WESTWARE.";
+                }
+                f.apply(_this, args);
+        }
+})
+const crxp = CanvasRenderingContext2D.prototype;
+crxp.fillText = new Proxy(crxp.fillText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "(press enter to spawn)") {
+                        args[0] = "geooorge#1126";
+                }
+                f.apply(_this, args);
+        }
+});
+crxp.strokeText = new Proxy(crxp.strokeText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "(press enter to spawn)") {
+                        args[0] = "geooorge#1126";
+                }
+                f.apply(_this, args);
+        }
+})
+crxp.fillText = new Proxy(crxp.fillText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "diep.io") {
+                        args[0] = "[ww]";
+                }
+                f.apply(_this, args);
+        }
+});
+crxp.strokeText = new Proxy(crxp.strokeText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "diep.io") {
+                        args[0] = "[ww]";
+                }
+                f.apply(_this, args);
+        }
+})
+crxp.fillText = new Proxy(crxp.fillText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "You were killed by:") {
+                        args[0] = "damn, you died by";
+                }
+                f.apply(_this, args);
+        }
+});
+crxp.strokeText = new Proxy(crxp.strokeText, {
+        apply: function(f, _this, args) {
+                const text = args[0];
+                if (args[0] === "You were killed by:") {
+                        args[0] = "damn, you died by";
+                }
+                f.apply(_this, args);
+    }
+})
+/////////////////////////////////////////////
+setInterval(triflanks, 100)
+document.addEventListener("keydown", (kc) => {
+        if (kc.keyCode === 88) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`Tri-Flank: ${triflank ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 81) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`Gunner-Trapper: ${traps ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 86) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`Bomber: ${bomber ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 90) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`Death-Star: ${deathstar ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 71) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`Painter: ${trappers ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 84) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`Twin-Basic: ${twinbasic ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 78) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`4T: ${realshotgun ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 82) Hook.recv(new Uint8Array([3, ...new TextEncoder().encode(`GUI: ${gai ? 'OFF' : 'ON'}`), 0, ...new Uint8Array(new Uint32Array([0x0500ff]).buffer), ...new Uint8Array(new Float32Array([2000]).buffer), 0]))
+        if (kc.keyCode === 88) triflank = !triflank;
+        if (kc.keyCode === 81) traps = !traps;
+        if (kc.keyCode === 86) bomber = !bomber;
+        if (kc.keyCode === 90) deathstar = !deathstar;
+        if (kc.keyCode === 71) trappers = !trappers;
+        if (kc.keyCode === 84) twinbasic = !twinbasic;
+        if (kc.keyCode === 78) realshotgun = !realshotgun;
+        if (kc.keyCode === 82) gai = !gai;
+});
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+console.log(ctx); // CanvasRenderingContext2D { /* ... */ }
+setTimeout(() => {
+        let gui = () => {
+                if (gai) {
+                        ctx.fillStyle = "White";
+                        ctx.lineWidth = 3;
+                        ctx.font = 1 + "em ubuntu";
+                        ctx.strokeStyle = "Black";
+                        ctx.strokeText(`[X]: Tri-Flank: ${triflank}`, 20, 200);
+                        ctx.fillText(`[X]: Tri-Flank: ${triflank}`, 20, 200);
+                        ctx.strokeText(`[V]: Bomber: ${bomber}`, 20, 220);
+                        ctx.fillText(`[V]: Bomber: ${bomber}`, 20, 220);
+                        ctx.strokeText(`[Z]: Death-Star: ${deathstar}`, 20, 240);
+                        ctx.fillText(`[Z]: Death-Star: ${deathstar}`, 20, 240);
+                        ctx.strokeText(`[T]: Twin-Basic: ${twinbasic}`, 20, 260);
+                        ctx.fillText(`[T]: Twin-Basic: ${twinbasic}`, 20, 260);
+                        ctx.strokeText(`[N]: 4-T: ${realshotgun}`, 20, 280);
+                        ctx.fillText(`[N]: 4-T: ${realshotgun}`, 20, 280);
+                        ctx.strokeText(`[Q] :Gunner-Trapper: ${traps}`, 20, 300);
+                        ctx.fillText(`[Q] :Gunner-Trapper: ${traps}`, 20, 300);
+                        ctx.strokeText(`[G] :Painter: ${trappers}`, 20, 320);
+                        ctx.fillText(`[G] :Painter: ${trappers}`, 20, 320);
+                        ctx.strokeText(`[R] Toggle GUI`, 20, 340);
+                        ctx.fillText(`[R] Toggle GUI`, 20, 340);
+                        ctx.fillStyle = "White";
+                        ctx.lineWidth = 2.7;
+                        ctx.font = 0.9 + "em ubuntu";
+                        ctx.strokeStyle = "Black";
+                        ctx.strokeText(`this is WESTWARE.`, 20, 360);
+                        ctx.fillText(`this is WESTWARE.`, 20, 360);
+                        ctx.strokeText(`discord.com/invite/vBq3XXUYXE`, 20, 380);
+                        ctx.fillText(`discord.com/invite/vBq3XXUYXE`, 20, 380);
+
+                } else {
+                        ctx.strokeText(``, 1, 1);
+                        ctx.fillText(``, 1, 1);
+                }
+                window.requestAnimationFrame(gui);
+        }
+        gui();
+    setTimeout(() => {
+
+        gui();
+}, 5000);
+}, 1000);
